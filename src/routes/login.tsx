@@ -55,8 +55,9 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row">
-      <aside className="relative flex flex-col justify-between overflow-hidden bg-primary text-primary-foreground px-6 py-8 sm:px-10 sm:py-10 lg:w-1/2 lg:min-h-screen lg:px-12 lg:py-12">
+    <div className="min-h-screen flex flex-col-reverse lg:flex-row">
+      {/* Brand panel — below form on mobile, left on desktop */}
+      <aside className="hidden lg:flex relative flex-col overflow-hidden bg-primary text-primary-foreground px-5 py-8 sm:px-8 lg:w-1/2 lg:min-h-screen lg:justify-between lg:px-12 lg:py-12 shrink-0">
         <div
           className="pointer-events-none absolute inset-0 opacity-40"
           style={{
@@ -67,21 +68,21 @@ function LoginPage() {
 
         <div className="relative z-10">
           <div className="flex items-center gap-3">
-            <div className="size-11 rounded-xl bg-white/15 backdrop-blur-sm grid place-items-center border border-white/20">
+            <div className="size-10 lg:size-11 rounded-xl bg-white/15 backdrop-blur-sm grid place-items-center border border-white/20">
               <Car className="size-5" strokeWidth={2.2} />
             </div>
-            <span className="text-lg font-semibold tracking-tight">NeevCabs</span>
+            <span className="text-base lg:text-lg font-semibold tracking-tight">NeevCabs</span>
           </div>
 
-          <h1 className="mt-10 sm:mt-14 text-3xl sm:text-4xl lg:text-[2.35rem] font-bold leading-[1.15] tracking-tight max-w-lg">
+          <h1 className="mt-5 lg:mt-14 text-xl sm:text-2xl lg:text-[2.35rem] font-bold leading-[1.2] tracking-tight max-w-lg">
             Drive Electric. Drive Green. Drive the Future.
           </h1>
-          <p className="mt-4 text-sm sm:text-[15px] text-primary-foreground/85 max-w-md leading-relaxed">
+          <p className="mt-2 lg:mt-4 text-xs sm:text-sm lg:text-[15px] text-primary-foreground/85 max-w-md leading-relaxed">
             India&apos;s centralized EV fleet operations platform — your driver app synced with Neev Operations in real time.
           </p>
         </div>
 
-        <div className="relative z-10 mt-8 lg:mt-0 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="relative z-10 mt-5 lg:mt-0 grid grid-cols-3 gap-2 lg:gap-3">
           {[
             { icon: Zap, title: "100% Electric", sub: "Zero Emissions" },
             { icon: Leaf, title: "Eco Friendly", sub: "18K+ kg CO₂ Saved" },
@@ -89,40 +90,46 @@ function LoginPage() {
           ].map((item) => (
             <div
               key={item.title}
-              className="rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-3.5"
+              className="rounded-lg lg:rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm px-2.5 py-2.5 lg:px-4 lg:py-3.5"
             >
-              <item.icon className="size-5 mb-2 opacity-95" strokeWidth={2} />
-              <div className="text-sm font-semibold">{item.title}</div>
-              <div className="text-[11px] text-primary-foreground/75 mt-0.5">{item.sub}</div>
+              <item.icon className="size-4 lg:size-5 mb-1 lg:mb-2 opacity-95" strokeWidth={2} />
+              <div className="text-[11px] lg:text-sm font-semibold leading-tight">{item.title}</div>
+              <div className="text-[9px] lg:text-[11px] text-primary-foreground/75 mt-0.5 hidden sm:block lg:block">
+                {item.sub}
+              </div>
             </div>
           ))}
         </div>
 
-        <p className="relative z-10 mt-8 text-[11px] text-primary-foreground/70 hidden sm:block">
+        <p className="relative z-10 mt-4 lg:mt-8 text-[10px] lg:text-[11px] text-primary-foreground/70 text-center lg:text-left">
           Powering sustainable mobility since 2023
         </p>
       </aside>
 
-      <main className="flex-1 flex flex-col items-center justify-center bg-[#eef2ef] px-4 py-10 sm:px-8 lg:py-12">
-        <div className="w-full max-w-[420px] rounded-2xl bg-card border border-border/80 shadow-[0_8px_40px_rgba(0,0,0,0.06)] p-7 sm:p-8 animate-fade-up">
-          <div className="lg:hidden flex items-center gap-2.5 mb-6 pb-6 border-b border-border">
-            <div className="size-9 rounded-lg bg-primary grid place-items-center text-primary-foreground">
-              <Car className="size-4" />
-            </div>
-            <span className="font-semibold">NeevCabs</span>
+      {/* Login form — first on mobile */}
+      <main className="flex-1 flex flex-col items-center justify-center bg-[#eef2ef] px-4 py-6 sm:py-8 lg:py-12 min-h-screen lg:min-h-screen safe-top">
+        <div className="lg:hidden w-full max-w-[420px] flex flex-col items-center text-center mb-6 animate-fade-up">
+          <div className="size-14 rounded-2xl bg-primary grid place-items-center text-primary-foreground shadow-lg shadow-primary/25">
+            <Car className="size-7" strokeWidth={2.2} />
           </div>
+          <h1 className="mt-4 text-2xl font-bold tracking-tight text-foreground">
+            Neev<span className="text-primary">Cabs</span>
+          </h1>
+          <p className="mt-1 text-xs text-muted-foreground font-medium">Driver Operations</p>
+        </div>
 
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">Welcome Back</h2>
+        <div className="w-full max-w-[420px] rounded-2xl bg-card border border-border/80 shadow-[0_8px_40px_rgba(0,0,0,0.06)] p-6 sm:p-8 animate-fade-up">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">Welcome Back</h2>
           <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
             Sign in to your driver operations dashboard
           </p>
 
-          <div className="mt-6 flex items-center justify-center gap-2 h-10 w-full rounded-xl bg-primary text-primary-foreground text-xs font-semibold shadow-sm">
+          <div className="mt-5 sm:mt-6 flex items-center justify-center gap-2 h-10 w-full rounded-xl bg-primary text-primary-foreground text-xs font-semibold shadow-sm">
             <User className="size-3.5" />
             Login as Driver
           </div>
 
-          <form onSubmit={submit} className="mt-6 space-y-4">
+          <form onSubmit={submit} className="mt-5 sm:mt-6 space-y-4">
             <div>
               <label className="block text-xs font-medium text-foreground mb-1.5">Email</label>
               <div className="flex items-center gap-2.5 px-3.5 h-11 rounded-xl border border-input bg-background focus-within:ring-2 focus-within:ring-ring/40 transition">
@@ -169,7 +176,7 @@ function LoginPage() {
             </button>
           </form>
 
-          <div className="my-6 border-t border-border" />
+          <div className="my-5 sm:my-6 border-t border-border" />
           <p className="text-[11px] text-center text-muted-foreground mb-3">
             Demo Mode — click to fill credentials
           </p>
@@ -182,7 +189,7 @@ function LoginPage() {
           </button>
         </div>
 
-        <p className="mt-6 max-w-[420px] text-center text-[11px] text-muted-foreground px-2">
+        <p className="mt-4 sm:mt-6 max-w-[420px] text-center text-[11px] text-muted-foreground px-2">
           By signing in, you agree to our Terms of Service and Privacy Policy
         </p>
       </main>
