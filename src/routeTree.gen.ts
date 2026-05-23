@@ -19,6 +19,7 @@ import { Route as AppProfileRouteImport } from './routes/_app.profile'
 import { Route as AppPaymentsRouteImport } from './routes/_app.payments'
 import { Route as AppNotificationsRouteImport } from './routes/_app.notifications'
 import { Route as AppHistoryRouteImport } from './routes/_app.history'
+import { Route as AppDriverSelfieRouteImport } from './routes/_app.driver-selfie'
 import { Route as AppCustomerRouteImport } from './routes/_app.customer'
 import { Route as AppBusinessRouteImport } from './routes/_app.business'
 import { Route as AppBeTheOwnerRouteImport } from './routes/_app.be-the-owner'
@@ -72,6 +73,11 @@ const AppHistoryRoute = AppHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => AppRoute,
 } as any)
+const AppDriverSelfieRoute = AppDriverSelfieRouteImport.update({
+  id: '/driver-selfie',
+  path: '/driver-selfie',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCustomerRoute = AppCustomerRouteImport.update({
   id: '/customer',
   path: '/customer',
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/be-the-owner': typeof AppBeTheOwnerRoute
   '/business': typeof AppBusinessRoute
   '/customer': typeof AppCustomerRoute
+  '/driver-selfie': typeof AppDriverSelfieRoute
   '/history': typeof AppHistoryRoute
   '/notifications': typeof AppNotificationsRoute
   '/payments': typeof AppPaymentsRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/be-the-owner': typeof AppBeTheOwnerRoute
   '/business': typeof AppBusinessRoute
   '/customer': typeof AppCustomerRoute
+  '/driver-selfie': typeof AppDriverSelfieRoute
   '/history': typeof AppHistoryRoute
   '/notifications': typeof AppNotificationsRoute
   '/payments': typeof AppPaymentsRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/_app/be-the-owner': typeof AppBeTheOwnerRoute
   '/_app/business': typeof AppBusinessRoute
   '/_app/customer': typeof AppCustomerRoute
+  '/_app/driver-selfie': typeof AppDriverSelfieRoute
   '/_app/history': typeof AppHistoryRoute
   '/_app/notifications': typeof AppNotificationsRoute
   '/_app/payments': typeof AppPaymentsRoute
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/be-the-owner'
     | '/business'
     | '/customer'
+    | '/driver-selfie'
     | '/history'
     | '/notifications'
     | '/payments'
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
     | '/be-the-owner'
     | '/business'
     | '/customer'
+    | '/driver-selfie'
     | '/history'
     | '/notifications'
     | '/payments'
@@ -170,6 +181,7 @@ export interface FileRouteTypes {
     | '/_app/be-the-owner'
     | '/_app/business'
     | '/_app/customer'
+    | '/_app/driver-selfie'
     | '/_app/history'
     | '/_app/notifications'
     | '/_app/payments'
@@ -257,6 +269,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHistoryRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/driver-selfie': {
+      id: '/_app/driver-selfie'
+      path: '/driver-selfie'
+      fullPath: '/driver-selfie'
+      preLoaderRoute: typeof AppDriverSelfieRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/customer': {
       id: '/_app/customer'
       path: '/customer'
@@ -285,6 +304,7 @@ interface AppRouteChildren {
   AppBeTheOwnerRoute: typeof AppBeTheOwnerRoute
   AppBusinessRoute: typeof AppBusinessRoute
   AppCustomerRoute: typeof AppCustomerRoute
+  AppDriverSelfieRoute: typeof AppDriverSelfieRoute
   AppHistoryRoute: typeof AppHistoryRoute
   AppNotificationsRoute: typeof AppNotificationsRoute
   AppPaymentsRoute: typeof AppPaymentsRoute
@@ -297,6 +317,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppBeTheOwnerRoute: AppBeTheOwnerRoute,
   AppBusinessRoute: AppBusinessRoute,
   AppCustomerRoute: AppCustomerRoute,
+  AppDriverSelfieRoute: AppDriverSelfieRoute,
   AppHistoryRoute: AppHistoryRoute,
   AppNotificationsRoute: AppNotificationsRoute,
   AppPaymentsRoute: AppPaymentsRoute,

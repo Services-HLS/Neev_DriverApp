@@ -44,6 +44,8 @@ export interface AppState {
   rentPenaltyDate: string | null;
   rentReminder2pm: boolean;
   rentReminder230pm: boolean;
+  /** Daily identity selfie — separate from trip-start vehicle verification. */
+  dailyDriverSelfieVerified: boolean;
   notifications: { id: string; title: string; body: string; ts: number; read: boolean; kind: string }[];
 }
 
@@ -75,6 +77,7 @@ const defaultState: AppState = {
   rentPenaltyDate: null,
   rentReminder2pm: false,
   rentReminder230pm: false,
+  dailyDriverSelfieVerified: false,
   notifications: [],
 };
 
@@ -115,6 +118,7 @@ function resetDailyState() {
     patch.tripStartTime = null;
     patch.tripStartOdometer = null;
     patch.tripStartBattery = null;
+    patch.dailyDriverSelfieVerified = false;
   }
 
   if (state.rentPenaltyDate !== today) {
@@ -190,6 +194,10 @@ export function pushNotification(n: { title: string; body: string; kind?: string
       ...s.notifications,
     ].slice(0, 50),
   }));
+}
+
+export function isDailyDriverSelfieComplete(s: AppState = state): boolean {
+  return s.dailyDriverSelfieVerified;
 }
 
 export function isTripAuthorizationComplete(s: AppState = state): boolean {

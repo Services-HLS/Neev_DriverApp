@@ -1,7 +1,7 @@
 import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
-  LayoutDashboard, Wallet, Bell, History, User, LogOut, Menu, X, Leaf,
+  LayoutDashboard, Wallet, Bell, User, LogOut, Menu, X, Leaf,
 } from "lucide-react";
 import { EcoBackground } from "./EcoBackground";
 import { logout, useAppState } from "@/lib/store";
@@ -12,7 +12,6 @@ const nav = [
   { to: "/business", label: "Dashboard", icon: LayoutDashboard },
   { to: "/payments", label: "Payments", icon: Wallet },
   { to: "/notifications", label: "Alerts", icon: Bell },
-  { to: "/history", label: "History", icon: History },
   { to: "/profile", label: "Profile", icon: User },
 ] as const;
 
@@ -137,7 +136,7 @@ export function AppShell() {
               </span>
             </div>
             <div className="hidden lg:flex items-center gap-2 text-sm text-muted-foreground">
-              <span className="capitalize text-primary font-medium">Customer Mode</span>
+              <span className="text-primary font-medium">B2C Mode</span>
               <span className="text-foreground/30">·</span>
               <span className="font-mono">{new Date().toLocaleDateString("en-IN", { weekday: "short", day: "2-digit", month: "short" })}</span>
             </div>
@@ -160,7 +159,7 @@ export function AppShell() {
         </main>
 
         <nav className="lg:hidden fixed bottom-0 inset-x-0 z-30 glass-strong border-t border-border safe-bottom">
-          <div className="grid grid-cols-5 px-2 pt-2">
+          <div className="grid grid-cols-4 px-2 pt-2">
             {nav.map(({ to, label, icon: Icon }) => {
               const active = path === to || path.startsWith(`${to}/`);
               return (
@@ -196,7 +195,7 @@ export function AppShell() {
               </div>
               <div className="leading-tight">
                 <div className="font-semibold text-white">Neev Driver</div>
-                <div className="text-xs sidebar-brand-sub">Customer Mode</div>
+                <div className="text-xs sidebar-brand-sub">B2C Mode</div>
               </div>
               <button type="button" className="ml-auto text-white/80" onClick={() => setOpenMobile(false)}>
                 <X className="size-5" />

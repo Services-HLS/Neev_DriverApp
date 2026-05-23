@@ -66,14 +66,14 @@ export function isSubmissionComplete(s: AppState, phase: TripPhase): boolean {
 
 export const tripPhaseCopy = {
   start: {
-    eyebrow: "Trip Authorization",
-    title: (reg: string) => `Start Trip · ${reg}`,
-    step4: "Trip activation",
-    activateTitle: "Activate trip",
-    activateBtn: "Activate trip",
-    finalBtn: "BEGIN SHIFT",
-    successTitle: "Trip Active",
-    successBody: (reg: string) => `${reg} · Shift started. Drive safely.`,
+    eyebrow: "Daily car pictures",
+    title: (reg: string) => `Daily car pictures · ${reg}`,
+    step4: "Submit pictures",
+    activateTitle: "Confirm submission",
+    activateBtn: "Submit for analysis",
+    finalBtn: "SUBMIT DAILY CAR PICTURES",
+    successTitle: "Pictures submitted",
+    successBody: (reg: string) => `${reg} · Daily car pictures sent for Neev Operations analysis.`,
   },
   end: {
     eyebrow: "End Trip · Submit for Analysis",

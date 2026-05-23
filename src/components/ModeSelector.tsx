@@ -1,8 +1,8 @@
 import { Briefcase, Car, Crown, Check } from "lucide-react";
 
 const modes = [
-  { id: "business", title: "Business", icon: Briefcase, disabled: true },
-  { id: "customer", title: "Customer", icon: Car, disabled: false },
+  { id: "business", title: "B2B", icon: Briefcase, disabled: true },
+  { id: "customer", title: "B2C", icon: Car, disabled: false },
   { id: "be-the-owner", title: "Be the Owner", icon: Crown, disabled: true },
 ] as const;
 

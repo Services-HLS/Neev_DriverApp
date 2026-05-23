@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
-  BatteryCharging, MapPin, Clock, ChevronRight, ShieldCheck, Bell, Wallet, Gauge, Sparkles, PlayCircle, Square, Calendar, UserCheck,
+  BatteryCharging, MapPin, Clock, ChevronRight, ShieldCheck, Bell, Wallet, Gauge, Camera, Square, Calendar, UserCheck, User,
 } from "lucide-react";
 import { Battery } from "@/components/Battery";
 import { ModeSelector } from "@/components/ModeSelector";
@@ -9,7 +9,7 @@ import { VehicleImage } from "@/components/VehicleImage";
 import { PageHeader } from "@/components/PageHeader";
 import { dailyVehicleAssignments, driver } from "@/lib/data";
 import { getTodaysAssignment, formatTripDuration } from "@/lib/operations";
-import { useAppState, isTripAuthorizationComplete, resetEndVerification } from "@/lib/store";
+import { useAppState, isTripAuthorizationComplete, isDailyDriverSelfieComplete, resetEndVerification } from "@/lib/store";
 import { useRentScheduler } from "@/hooks/use-rent-scheduler";
 
 export const Route = createFileRoute("/_app/business")({
@@ -24,6 +24,7 @@ function DriverDashboard() {
   const battery = useAppState((s) => s.batteryPct);
   const odo = useAppState((s) => s.odometer);
   const authComplete = useAppState(isTripAuthorizationComplete);
+  const dailySelfieDone = useAppState(isDailyDriverSelfieComplete);
   const navigate = useNavigate();
   const [timer, setTimer] = useState("00:00:00");
 
@@ -41,13 +42,13 @@ function DriverDashboard() {
     <div className="page-shell-wide space-y-4">
       <div className="flex items-start justify-between gap-3 animate-fade-up">
         <PageHeader
-          eyebrow="Driver Dashboard · Customer"
+          eyebrow="Driver Dashboard · B2C"
           title={`Hello, ${driver.name.split(" ")[0]}`}
           description="Operations ready for today's shift"
         />
         <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full glass text-[10px] shrink-0">
           <span className={`size-1.5 rounded-full ${tripActive ? "bg-primary animate-pulse-glow" : "bg-muted-foreground"}`} />
-          {tripActive ? "Trip Active" : authComplete ? "Ready" : "Awaiting Start"}
+          {tripActive ? "Shift active" : !dailySelfieDone ? "Selfie pending" : authComplete ? "Pictures done" : "Pictures pending"}
         </div>
       </div>
 
@@ -57,7 +58,7 @@ function DriverDashboard() {
         <div className="flex flex-col sm:flex-row sm:items-start gap-4">
           <div className="flex-1 min-w-0 order-2 sm:order-1">
             <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider opacity-80">
-              <Sparkles className="size-3" /> Today&apos;s assigned vehicle
+              <Camera className="size-3" /> Daily car pictures
             </div>
             <div className="mt-1 font-mono stat-md">{vehicle.reg}</div>
             <div className="text-xs opacity-90">{vehicle.model}</div>
@@ -72,12 +73,6 @@ function DriverDashboard() {
               <Metric label="Driver" value={driver.status} icon={<UserCheck className="size-3" />} />
             </div>
 
-            <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] opacity-90">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10">
-                <Calendar className="size-3" /> {todayLabel}
-              </span>
-            </div>
-
             <div className="mt-3 max-w-xs">
               <div className="flex justify-between text-[10px] opacity-90 mb-1">
                 <span>EV battery</span><span className="font-mono">{vehicle.battery}%</span>
@@ -85,19 +80,46 @@ function DriverDashboard() {
               <Battery pct={vehicle.battery} size="sm" />
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 space-y-2 max-w-md">
               {!tripActive ? (
-                <button
-                  type="button"
-                  onClick={() => navigate({ to: "/vehicle-verification" })}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-10 px-5 rounded-lg bg-primary-foreground text-primary font-semibold text-sm shadow-md hover:scale-[1.01] active:scale-[.98] transition"
-                >
-                  <PlayCircle className="size-4" /> START TRIP
-                </button>
-              ) : (
                 <div className="space-y-2">
+                  <div className="rounded-lg bg-white/10 border border-white/20 px-3 py-2.5 space-y-1">
+                    <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold opacity-95">
+                      <Calendar className="size-3.5 shrink-0" />
+                      {todayLabel}
+                    </div>
+                    <div className="text-[10px] opacity-85 font-mono">
+                      Shift {vehicle.shift} · {vehicle.pickup.split(",")[0]}
+                    </div>
+                    {authComplete && (
+                      <div className="text-[10px] text-primary-foreground font-medium pt-0.5">
+                        Today&apos;s pictures submitted · ready for shift
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => navigate({ to: "/vehicle-verification" })}
+                    className="w-full inline-flex items-center justify-center gap-2 h-11 px-5 rounded-lg bg-primary-foreground text-primary font-semibold text-sm shadow-md hover:scale-[1.01] active:scale-[.98] transition"
+                  >
+                    <Camera className="size-4 shrink-0" />
+                    {authComplete ? "Daily car pictures · View / update" : "Daily car pictures"}
+                  </button>
+                  <p className="text-[10px] opacity-75 text-center sm:text-left">
+                    7 vehicle photos + walkaround video for operations analysis
+                  </p>
+                </div>
+              ) : null}
+
+              {tripActive && (
+                <div className="space-y-2">
+                  <div className="rounded-lg bg-white/10 border border-white/20 px-3 py-2 text-[11px] font-medium opacity-95 inline-flex items-center gap-1.5">
+                    <Calendar className="size-3.5 shrink-0" />
+                    {todayLabel}
+                  </div>
                   <div className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-primary-foreground/15 border border-primary-foreground/25 font-mono text-sm">
-                    Trip Active · {timer}
+                    Shift active · {timer}
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-[10px]">
                     <div className="rounded-lg bg-white/10 px-2 py-1.5"><span className="opacity-70">Shift</span><div className="font-mono">{vehicle.shift}</div></div>
@@ -144,11 +166,16 @@ function DriverDashboard() {
         </section>
       )}
 
-      <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
         <Widget icon={<Wallet className="size-4" />} label="Payments" value="EMI + Rent" sub="Due by 3 PM" to="/payments" />
         <Widget icon={<Bell className="size-4" />} label="Alerts" value="Updates" sub="Reminders" to="/notifications" />
-        <Widget icon={<ShieldCheck className="size-4" />} label="Verification" value={authComplete ? "Done" : "Required"} sub="Trip auth" to="/vehicle-verification" />
-        <Widget icon={<Gauge className="size-4" />} label="History" value="Trips" sub="Rent & EMI" to="/history" />
+        <Widget
+          icon={<User className="size-4" />}
+          label="Driver selfie"
+          value={dailySelfieDone ? "Verified" : "Take now"}
+          sub="Daily identity check"
+          to="/driver-selfie"
+        />
       </section>
     </div>
   );
